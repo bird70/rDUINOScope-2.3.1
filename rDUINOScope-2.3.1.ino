@@ -29,9 +29,9 @@
 // ... used to calculate the HourAngle to microSteps ratio
 // UPDATE THIS PART according to your SET-UP
 // ---------------------------------------------
-// NB: RA and DEC uses the same gear ratio (144 tooth in my case)!
+// NB: In my case (Mount EQ-3-2), RA and DEC do not use the same gear ratio (144 tooth in Dessi's case)! - mine are 130 and 60
 //----------------------------------------------
-int WORM = 130; // or is it not? this says EQ3-2 is 130 http://eq-mod.sourceforge.net/
+int WORM = 130; // or is it not? this says EQ3-2 is 130 http://eq-mod.sourceforge.net/ -//txs 22 Feb 2020 DEC Axis  is 65/ RA Axis  is 130
 //int WORM = 144;
 float REDUCTOR = 1;      // 1:4 gear reduction
 int DRIVE_STP = 200;   // Stepper drive have 200 steps per revolution
@@ -51,7 +51,7 @@ int DEC_M_CONST;
 int MIN_TO_MERIDIAN_FLIP = 2;   // This constant tells the system when to do the Meridian Flip. "= 2" means 2 minutes before 24:00h (e.g. 23:58h)
 int MIN_SOUND_BEFORE_FLIP = 3;   // This constant tells the system to start Sound before it makes Meridian Flip
 float mer_flp;                   // The calculateLST_HA() function depending on this timer will convert the HA and DEC to the propper ones to do the flip.
-boolean MERIDIAN_FLIP_DO = false;
+boolean MERIDIAN_FLIP_DO = true; //txs 22 Feb 2020 changed to TRUE
 int Tracking_type = 1;  // 1: Sidereal, 2: Solar, 0: Lunar;
 int Clock_Sidereal;  // Variable for the Interruptions. nterruption is initialized depending on the DATA above -in miliseconds
 int Clock_Solar;  // Variable for the Interruptions. nterruption is initialized depending on the DATA above -in miliseconds
@@ -136,8 +136,8 @@ UTouch  myTouch(DCLK, CS, DIN, DOUT, IRQ);
 #define  note_X     1650    // 
 //
 //
-const String FirmwareDate = "03 08 17";
-const String FirmwareNumber = "v2.3.1 Boiana EQ";
+const String FirmwareDate = "03 08 17/23 02 20";
+const String FirmwareNumber = "v2.3.1 Boiana EQ - TXS";
 const String FirmwareName = "rDUINOScope";
 const String FirmwareTime = "12:00:00";
 //
@@ -463,7 +463,7 @@ double det = 0;
 
 // PIN selection
 int speakerOut = 2;
-//int dht_pin = 3;
+//int dht_pin = 3;// txs 23 Feb 2020
 // Day/Night mode - A6;
 int RA_STP = 4;
 int RA_DIR = 5;
@@ -492,7 +492,7 @@ int DEV1 = A2;
 int DEV2 = A3;
 int TFTBright = DAC0;
 int Joy_SW = A11;
-int POWER_DRV8825 = A8;
+//int POWER_DRV8825 = A8; //txs 23 Feb 2020 - where and how is this used??
 
 
 void setup(void) {
@@ -507,7 +507,7 @@ void setup(void) {
  
   MicroSteps_360 = ww*www;
   RA_90 = MicroSteps_360 / 4;  // How much in microSteps the RA motor have to turn in order to make 6h = 90 degrees;
-  DEC_90 = RA_90;   // How mich in microSteps the DEC motor have to turn in order to make 6h = 90 degrees;
+  DEC_90 = RA_90/2;   // How much in microSteps the DEC motor have to turn in order to make 6h = 90 degrees; // txs 23 Feb 2020: changed the ratio between RA and DEC because of the different worms used (65/130 respectively)
   HA_H_CONST = MicroSteps_360/360;
   DEC_D_CONST = HA_H_CONST;
   
@@ -766,7 +766,7 @@ void setup(void) {
   TFT_Timer = millis();
   TFT_timeout = 0;
   RA_move_ending = 0;
-  //considerTempUpdates();//txs
+  considerTempUpdates();//txs 22 Feb 2020 - I had previously commented this out
 
   digitalWrite(POWER_DRV8825, HIGH); // Switch on the Motor Diver Power!
 }
@@ -836,7 +836,8 @@ void loop(void) {
       Serial.print("Joystick Y:");
       Serial.println(yPosition);
       
-      if ((xPosition < 470) || (xPosition > 620) || (yPosition < 470) || (yPosition > 620)){
+      // txs 23 Feb 2020 changed from positions 470/620 to 420/690 to 20/500
+      if ((xPosition < 20) || (xPosition > 500) || (yPosition < 20) || (yPosition > 500)){
         IS_MANUAL_MOVE = true;
         if (IS_STEPPERS_ON){
           consider_Manual_Move(xPosition, yPosition);
