@@ -492,7 +492,7 @@ int DEV1 = A2;
 int DEV2 = A3;
 int TFTBright = DAC0;
 int Joy_SW = A11;
-//int POWER_DRV8825 = A8; //txs 23 Feb 2020 - where and how is this used??
+int POWER_DRV8825 = A8; //txs 23 Feb 2020 - where and how is this used??
 
 
 void setup(void) {
