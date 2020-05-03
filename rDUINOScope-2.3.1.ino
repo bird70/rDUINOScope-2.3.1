@@ -1621,7 +1621,7 @@ void Current_RA_DEC(){
       // To ALSO correct for the Star Alignment offset
       float tmp_dec = (float(DEC_90) - float(abs(DEC_microSteps))) / float(DEC_D_CONST);
       tmp_dec -= delta_a_DEC;
-      tmp_dec = tmp_dec*-1 //https://www.facebook.com/groups/150875201997704/?multi_permalinks=925638177854732%2C922993624785854&notif_id=1588099205796770&notif_t=group_activity correction for Southern Hemisphere display in Stellarium
+      tmp_dec = tmp_dec*-1; //https://www.facebook.com/groups/150875201997704/?multi_permalinks=925638177854732%2C922993624785854&notif_id=1588099205796770&notif_t=group_activity correction for Southern Hemisphere display in Stellarium
       int sDEC_tel = 0;
       if (tmp_dec < 0){
          sDEC_tel = 45;
