@@ -65,7 +65,7 @@ void drawGPSScreen(){
   tft.setCursor(20, 55);
   tft.print("Waiting for");
   tft.setCursor(10, 85);
-  tft.print("GPS satellite");
+  tft.print("GPS fix");
   tft.setTextSize(1);
   tft.setCursor(5, 120);
   tft.print("Once the GPS connects to satellites, it will calculate the LAT and LNG of your current position and update the Greenwich Time (GMT).");
@@ -78,7 +78,7 @@ void drawGPSScreen(){
   tft.println("SKIP");
   tft.setTextSize(1);
   tft.setCursor(50, 345);
-  tft.print("Will assign coordinates");
+  tft.print("to assign coordinates");
   tft.setCursor(68, 355);
   tft.print("for Wellington, NZ");
 }

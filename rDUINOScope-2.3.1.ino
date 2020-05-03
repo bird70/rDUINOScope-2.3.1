@@ -137,11 +137,11 @@ UTouch  myTouch(DCLK, CS, DIN, DOUT, IRQ);
 //
 //
 const String FirmwareDate = "03 08 17/23 02 20";
-const String FirmwareNumber = "v2.3.1 Boiana EQ - TXS";
+const String FirmwareNumber = "v2.3.1 Boiana EQ - TXS, Mai '20";
 const String FirmwareName = "rDUINOScope";
 const String FirmwareTime = "12:00:00";
 //
-//..... Below are the VARs for the code. Most of them are self explenatory
+//..... Below are the VARs for the code. Most of them are self explanatory
 //
 DHT dht(DHTPIN, DHTTYPE);
 //ADS7843 touch(CS, DCLK, DIN, DOUT, IRQ);
@@ -509,7 +509,7 @@ void setup(void) {
   RA_90 = MicroSteps_360 / 4;  // How much in microSteps the RA motor have to turn in order to make 6h = 90 degrees;
   DEC_90 = RA_90/2;   // How much in microSteps the DEC motor have to turn in order to make 6h = 90 degrees; // txs 23 Feb 2020: changed the ratio between RA and DEC because of the different worms used (65/130 respectively)
   HA_H_CONST = MicroSteps_360/360;
-  DEC_D_CONST = HA_H_CONST;
+  DEC_D_CONST = HA_H_CONST;// txs 3 Mar 2020: changed - ad reversed the ratio between RA and DEC because of the different worms used (65/130 respectively)
   
   Clock_Sidereal = 1000000/(MicroSteps_360/SIDEREAL_DAY);  // This way I make the interruption occuer 2wice faster than needed - REASON: allow max time for Pin-UP, Pin-DOWN action
   Clock_Solar = 1000000/(MicroSteps_360/(SIDEREAL_DAY-235.9095));
@@ -836,8 +836,8 @@ void loop(void) {
       Serial.print("Joystick Y:");
       Serial.println(yPosition);
       
-      // txs 23 Feb 2020 changed from positions 470/620 to 420/690 to 20/500
-      if ((xPosition < 20) || (xPosition > 500) || (yPosition < 20) || (yPosition > 500)){
+      // txs 23 Feb 2020 changed from positions 470/620 to 420/690 to 20/500 to 490/550
+      if ((xPosition < 490) || (xPosition > 550) || (yPosition < 490) || (yPosition > 550)){
         IS_MANUAL_MOVE = true;
         if (IS_STEPPERS_ON){
           consider_Manual_Move(xPosition, yPosition);
@@ -1179,7 +1179,7 @@ void cosiderSlewTo(){
 
     SLEW_RA_microsteps  = HA_decimal * HA_H_CONST;     // Hardware Specific Code  
     SLEW_DEC_microsteps = DEC_90 - (DEC_decimal * DEC_D_CONST);    // Hardware specific code
-
+    
     if(IS_MERIDIAN_PASSED == true){
         SLEW_DEC_microsteps*= -1;
     }
